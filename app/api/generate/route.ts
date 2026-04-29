@@ -14,7 +14,7 @@ const ResultSchema = z.object({
 
 const BodySchema = z.object({
   concept: z.string().min(1).max(400),
-  type: z.enum(["note", "melmaga", "blog"]),
+  type: z.enum(["note", "melmaga", "x", "threads"]),
 });
 
 export async function POST(req: NextRequest) {

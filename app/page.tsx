@@ -4,13 +4,14 @@ import { useState } from "react";
 import { ApiKeyDialog, useGeminiKey } from "@/components/ApiKeyDialog";
 import { ResultCard, type Result } from "@/components/ResultCard";
 import { ResultModal } from "@/components/ResultModal";
-import type { ContentType } from "@/lib/prompts";
+import { CONTENT_TYPES, type ContentType } from "@/lib/prompts";
 
 type Slot = { data: Result | null; error: string | null };
 const EMPTY: Record<ContentType, Slot> = {
   note: { data: null, error: null },
   melmaga: { data: null, error: null },
-  blog: { data: null, error: null },
+  x: { data: null, error: null },
+  threads: { data: null, error: null },
 };
 
 export default function Page() {
@@ -31,9 +32,8 @@ export default function Page() {
     setLoading(true);
     setSlots(EMPTY);
 
-    const types: ContentType[] = ["note", "melmaga", "blog"];
     await Promise.all(
-      types.map(async (type) => {
+      CONTENT_TYPES.map(async (type) => {
         try {
           const res = await fetch("/api/generate", {
             method: "POST",
@@ -102,8 +102,8 @@ export default function Page() {
         </button>
       </section>
 
-      <section className="grid gap-5 md:grid-cols-3">
-        {(["note", "melmaga", "blog"] as ContentType[]).map((t) => (
+      <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {CONTENT_TYPES.map((t) => (
           <ResultCard
             key={t}
             type={t}
