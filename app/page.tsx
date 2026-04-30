@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ApiKeyDialog, useGeminiKey } from "@/components/ApiKeyDialog";
 import { ResultCard, type Result } from "@/components/ResultCard";
 import { ResultModal } from "@/components/ResultModal";
 import { CONTENT_TYPES, type ContentType } from "@/lib/prompts";
+import { useAuth } from "@/lib/firebase/auth-context";
 
 type Slot = { data: Result | null; error: string | null };
 const EMPTY: Record<ContentType, Slot> = {
@@ -15,12 +17,28 @@ const EMPTY: Record<ContentType, Slot> = {
 };
 
 export default function Page() {
+  const router = useRouter();
+  const { user, status, signOut } = useAuth();
   const { key, save } = useGeminiKey();
   const [keyOpen, setKeyOpen] = useState(false);
   const [concept, setConcept] = useState("");
   const [loading, setLoading] = useState(false);
   const [slots, setSlots] = useState<Record<ContentType, Slot>>(EMPTY);
   const [modal, setModal] = useState<{ data: Result; type: ContentType } | null>(null);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/login");
+    }
+  }, [status, router]);
+
+  if (status !== "authenticated") {
+    return (
+      <main className="flex min-h-[100svh] items-center justify-center px-5 py-10 text-sm text-white/55">
+        読み込み中...
+      </main>
+    );
+  }
 
   const generate = async () => {
     const c = concept.trim();
@@ -77,9 +95,24 @@ export default function Page() {
             集客のためのコンテンツを、一瞬で。
           </p>
         </div>
-        <button className="btn-ghost" onClick={() => setKeyOpen(true)}>
-          {key ? "APIキー ✓" : "APIキー"}
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="hidden text-xs text-white/45 sm:inline">
+            {user?.email}
+          </span>
+          <button className="btn-ghost" onClick={() => setKeyOpen(true)}>
+            {key ? "APIキー ✓" : "APIキー"}
+          </button>
+          <button
+            className="btn-ghost"
+            onClick={async () => {
+              if (!confirm("ログアウトしますか？")) return;
+              await signOut();
+              router.replace("/login");
+            }}
+          >
+            ログアウト
+          </button>
+        </div>
       </header>
 
       <section className="glass-panel mb-10 p-5 md:p-6">
@@ -107,9 +140,9 @@ export default function Page() {
           <ResultCard
             key={t}
             type={t}
-            data={slots[t].data}
-            error={slots[t].error}
-            loading={loading && !slots[t].data && !slots[t].error}
+            data={slots[t]?.data ?? null}
+            error={slots[t]?.error ?? null}
+            loading={loading && !slots[t]?.data && !slots[t]?.error}
             onExpand={(data, type) => setModal({ data, type })}
           />
         ))}

@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // allowlist: ログイン本人が自分のメールアドレスのドキュメントだけを読める
+    // 書き込みはコンソール（管理者）からのみ
+    match /allowlist/{email} {
+      allow read: if request.auth != null
+                  && request.auth.token.email != null
+                  && request.auth.token.email.lower() == email;
+      allow write: if false;
+    }
+
+    // それ以外のコレクションは全拒否（必要になったらここに追加）
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
