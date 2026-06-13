@@ -19,6 +19,7 @@ const EMPTY: Record<ContentType, Slot> = {
   melmaga: { data: null, error: null },
   x: { data: null, error: null },
   threads: { data: null, error: null },
+  substack: { data: null, error: null },
 };
 
 export default function Page() {
@@ -129,14 +130,14 @@ export default function Page() {
         />
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs leading-relaxed text-white/45">
-            note、メルマガ、X、Threads用の投稿文をまとめて生成します。
+            note、メルマガ、X、Threads、Substack用の投稿文をまとめて生成します。
           </p>
           <button
             className="btn-primary"
             onClick={generate}
             disabled={loading || !concept.trim()}
           >
-            {loading ? `生成中 ${readyCount}/4` : "コンテンツ生成"}
+            {loading ? `生成中 ${readyCount}/${CONTENT_TYPES.length}` : "コンテンツ生成"}
           </button>
         </div>
       </section>
