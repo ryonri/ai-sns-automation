@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "gemini_api_key";
+const STORAGE_KEY = "openai_api_key";
 
-export function useGeminiKey() {
+export function useOpenAiKey() {
   const [key, setKey] = useState<string>("");
   useEffect(() => {
     const v = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) ?? "" : "";
@@ -43,18 +43,18 @@ export function ApiKeyDialog({
         onClick={(e) => e.stopPropagation()}
         className="glass-panel w-[min(92vw,520px)] p-6"
       >
-        <h2 className="text-lg font-semibold mb-1">Gemini APIキー</h2>
+        <h2 className="text-lg font-semibold mb-1">OpenAI APIキー</h2>
         <p className="text-sm text-white/60 mb-4">
           キーはあなたのブラウザにのみ保存され、生成のたびにリクエストヘッダで送信されます。サーバーには保存しません。
           <br />
           取得:{" "}
           <a
-            href="https://aistudio.google.com/apikey"
+            href="https://platform.openai.com/api-keys"
             target="_blank"
             rel="noreferrer"
             className="text-amber-300 underline"
           >
-            Google AI Studio
+            OpenAI Platform
           </a>
         </p>
         <input
@@ -62,7 +62,7 @@ export function ApiKeyDialog({
           autoComplete="off"
           spellCheck={false}
           className="glass-input mb-4"
-          placeholder="AIza..."
+          placeholder="sk-..."
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />

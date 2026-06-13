@@ -21,16 +21,16 @@ export function ResultCard({
     <button
       type="button"
       onClick={() => data && onExpand(data, type)}
-      className="glass-panel p-5 text-left transition hover:-translate-y-0.5 hover:border-white/20 disabled:cursor-default"
+      className="glass-panel result-card text-left transition hover:border-white/20 disabled:cursor-default"
       disabled={!data}
     >
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between gap-3">
         <span className={`badge ${type}`}>{CONTENT_LABEL[type]}</span>
         {data && <span className="text-xs text-white/50">クリックで全文</span>}
       </div>
-      <div className="min-h-[140px]">
+      <div className="result-card-body">
         {loading ? (
-          <div className="grid h-32 place-items-center">
+          <div className="grid h-full min-h-28 place-items-center">
             <div className="spinner" />
           </div>
         ) : error ? (
@@ -48,9 +48,7 @@ export function ResultCard({
           </>
         ) : (
           <p className="text-sm text-white/45">
-            コンセプトを入力して
-            <br />
-            生成ボタンを押してください
+            生成待ち
           </p>
         )}
       </div>

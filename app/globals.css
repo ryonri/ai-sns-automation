@@ -21,11 +21,62 @@
       radial-gradient(800px 600px at 50% 120%, rgba(80, 140, 255, 0.12), transparent 60%),
       var(--color-bg-base);
     min-height: 100vh;
+    overflow-x: hidden;
   }
   ::selection { background: rgba(201, 169, 97, 0.35); }
 }
 
 @layer components {
+  .sns-app-shell {
+    width: 100%;
+    min-height: 100vh;
+    padding: 22px;
+    box-sizing: border-box;
+  }
+  .sns-app-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .sns-eyebrow {
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: rgba(201, 169, 97, .85);
+  }
+  .sns-title {
+    margin: 0;
+    color: #f7f4e9;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.18;
+  }
+  .sns-input-panel {
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .sns-concept-input {
+    display: block;
+    min-height: 128px;
+    max-height: 220px;
+    resize: vertical;
+    line-height: 1.7;
+  }
+  .sns-results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .sns-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, .36);
+  }
   .glass-panel {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -95,5 +146,35 @@
     border-top-color: var(--color-accent);
     animation: spin 0.8s linear infinite;
   }
+  .result-card {
+    min-width: 0;
+    padding: 16px;
+    min-height: 220px;
+  }
+  .result-card-body {
+    min-height: 150px;
+  }
   @keyframes spin { to { transform: rotate(360deg); } }
+}
+
+@media (max-width: 760px) {
+  .sns-app-shell {
+    padding: 16px;
+  }
+  .sns-app-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .sns-results-grid {
+    grid-template-columns: 1fr;
+  }
+  .result-card {
+    min-height: 180px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .sns-app-shell {
+    padding: 24px 28px;
+  }
 }

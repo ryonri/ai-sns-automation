@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/lib/firebase/auth-context";
+import { SourceLock } from "@/components/SourceLock";
 
 export const metadata: Metadata = {
   title: "AI集客オートメーション",
@@ -15,7 +15,8 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <SourceLock />
+        {children}
       </body>
     </html>
   );
